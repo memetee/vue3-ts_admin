@@ -11,6 +11,9 @@ export default defineComponent({
   name: 'App',
   components: {
     HelloWorld
+  },
+  mounted() {
+    console.log('呵呵呵呵呵');
   }
 });
 </script>
