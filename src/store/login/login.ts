@@ -7,7 +7,8 @@ import {
   requestUserMenusByRoleId
 } from '@/service/login/login';
 import LocalCache from '@/utils/cache';
-import { IAccount, IDataType, ILoginResult } from '@/service/login/types';
+import { mapMenusToRoutes } from '@/utils/map-menus';
+import { IAccount } from '@/service/login/types';
 import router from '@/router';
 // 这两个范型必须传
 const loginModule: Module<ILoginState, IRootState> = {
@@ -23,14 +24,16 @@ const loginModule: Module<ILoginState, IRootState> = {
   mutations: {
     changeToken(state, token: string) {
       state.token = token;
-      console.log('获取token', token);
     },
     changeUserInfo(state, userInfo: any) {
       state.userInfo = userInfo;
     },
     changeUserMenus(state, userMenus: any) {
       state.userMenus = userMenus;
-      console.log(userMenus);
+      const routes = mapMenusToRoutes(userMenus);
+      routes.forEach((route) => {
+        router.addRoute('main', route);
+      });
     }
   },
   actions: {
@@ -48,13 +51,11 @@ const loginModule: Module<ILoginState, IRootState> = {
       const userInfo = userInfoResult.data;
       commit('changeUserInfo', userInfo);
       LocalCache.setLocalCache('userInfo', userInfo);
-      console.log('userInfo', userInfo);
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id);
       const userMenus = userMenusResult.data;
       commit('changeUserMenus', userMenus);
       LocalCache.setLocalCache('userMenus', userMenus);
       router.push('/main');
-      console.log('打印', userMenus);
     },
     phoneLoginAction({ commit }, payload: any) {
       console.log('执行phoneLoginAction', payload);

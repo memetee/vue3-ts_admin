@@ -17,7 +17,7 @@ interface DataType {
 }
 
 app.use(globalRegister);
-app.use(router);
 app.use(store);
 setupStore();
+app.use(router);
 app.mount('#app');

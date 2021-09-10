@@ -1,6 +1,6 @@
 import tsRequest from '..';
-import { IAccount, IDataType, ILoginResult } from './types';
-
+import { IAccount, ILoginResult } from './types';
+import { IDataType } from '../types';
 enum LoginAPI {
   AccountLogin = '/login',
   LoginUserInfo = '/users/',

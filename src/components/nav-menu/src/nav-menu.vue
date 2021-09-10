@@ -2,10 +2,10 @@
   <div class="nav-menu">
     <div class="logo">
       <img class="img" src="~@/assets/img/logo.svg" alt="log" />
-      <span class="title">vue3+ts</span>
+      <span class="title" v-if="!collapse">vue3+ts</span>
     </div>
     <el-menu
-      default-active="2"
+      :default-active="defaultValue"
       class="el-menu-vertical"
       :collapse="collapse"
       background-color="#0c2135"
@@ -20,13 +20,16 @@
               <i v-if="item.icon" :class="item.icon"></i>
               <span>{{ item.name }}</span>
             </template>
+            <template v-for="subItem in item.children" :key="subItem.id">
+              <el-menu-item
+                :index="subItem.id + ''"
+                @click="handleItemClick(subItem)"
+              >
+                <i v-if="subItem.icon" :class="subItem.icon"></i>
+                <span>{{ subItem.name }}</span>
+              </el-menu-item>
+            </template>
           </el-submenu>
-          <template v-for="subItem in item.children" :key="subItem.id">
-            <el-menu-item :index="subItem.id + ''">
-              <i v-if="subItem.icon" :class="subItem.icon"></i>
-              <span>{{ subItem.name }}</span>
-            </el-menu-item>
-          </template>
         </template>
         <template v-else-if="item.type === 2">
           <el-menu-item :index="item.id + ''">
@@ -40,16 +43,40 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
+import { defineComponent, computed, ref } from 'vue';
 import { useStore } from '@/store';
 import { IRootState } from '@/store/type';
+import { useRouter, useRoute } from 'vue-router';
+import { pathMapToMenu } from '@/utils/map-menus';
 export default defineComponent({
+  props: {
+    collapse: {
+      type: Boolean,
+      default: false
+    }
+  },
   setup() {
     const store = useStore();
     const userMenus = computed(() => store.state.login.userMenus);
-    console.log('展示的页面', userMenus);
+
+    const router = useRouter();
+    const route = useRoute();
+    const currentPath = route.path;
+
+    const menu = pathMapToMenu(userMenus.value, currentPath);
+    const defaultValue = ref(menu.id + '');
+
+    const handleItemClick = (item: any) => {
+      console.log(item);
+      router.push({
+        path: item.url ?? '/not-found'
+      });
+    };
+
     return {
-      userMenus
+      userMenus,
+      handleItemClick,
+      defaultValue
     };
   }
 });

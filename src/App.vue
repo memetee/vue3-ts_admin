@@ -1,6 +1,8 @@
 <template>
   <div class="app">
-    <router-view></router-view>
+    <ElConfigProvider :locale="zhCn">
+      <router-view></router-view>
+    </ElConfigProvider>
   </div>
 </template>
 
@@ -11,10 +13,17 @@ import { defineComponent } from 'vue';
 // 这样引用太麻烦了，可以配置plugin
 // import 'element-plus/lib/theme-chalk/el-button.css';
 // import 'element-plus/lib/theme-chalk/base.css';
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
+import { ElConfigProvider } from 'element-plus';
 export default defineComponent({
   name: 'App',
   components: {
-    // ElButton
+    ElConfigProvider
+  },
+  setup() {
+    return {
+      zhCn
+    };
   }
 });
 </script>
