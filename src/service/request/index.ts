@@ -83,7 +83,7 @@ class TSRequest {
     return this.request<T>({ ...config, method: 'POST' });
   }
   delete<T>(config: TsRequestConfig<T>): Promise<T> {
-    return this.request<T>({ ...config, method: 'POST' });
+    return this.request<T>({ ...config, method: 'DELETE' });
   }
   patch<T>(config: TsRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' });

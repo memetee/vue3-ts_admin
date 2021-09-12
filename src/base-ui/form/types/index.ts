@@ -8,11 +8,12 @@ export interface IFormItem {
   placeholder?: any;
   options?: any[string];
   otherOptions?: any;
+  isHidden?: boolean;
 }
 
 export interface IForm {
   formItems: IFormItem[];
   labelWidth?: string;
   colLayout?: any;
-  itemLayout?: any;
+  itemStyle?: any;
 }

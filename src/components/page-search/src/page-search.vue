@@ -50,6 +50,7 @@ export default defineComponent({
       emit('resetBtnClick');
     };
     const handleQueryClick = () => {
+      console.log('点击了搜索');
       // 点击了搜索
       emit('queryBtnClick', formData.value);
     };

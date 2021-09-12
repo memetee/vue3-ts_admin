@@ -52,5 +52,19 @@ export function pathMapToMenu(
     }
   }
 }
+export function mapMenusToPermissions(userMenus: any[]) {
+  const permissions: any[] = [];
+  const _recurseGetPermission = (userMenus: any[]) => {
+    for (const menu of userMenus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _recurseGetPermission(menu.children ?? []);
+      } else if (menu.type === 3) {
+        permissions.push(menu.permission);
+      }
+    }
+  };
+  _recurseGetPermission(userMenus);
+  return permissions;
+}
 
 export { firstMenu };
