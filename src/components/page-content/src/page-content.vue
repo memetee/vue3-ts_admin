@@ -16,7 +16,9 @@
         >
           新建用户
         </el-button>
-        <el-button icon="el-icon-refresh" size="medium">刷新</el-button>
+        <el-button icon="el-icon-refresh" size="medium" @click="handleUpdate"
+          >刷新</el-button
+        >
       </template>
       <!-- 列表插槽固定的 -->
       <!-- <template #status="scope">
@@ -123,7 +125,6 @@ export default defineComponent({
       getPageData();
     });
     // 获取其他的动态插槽名称
-    console.log('props', props.contentTableConfig);
     const otherPropSlots = props.contentTableConfig?.propsList.filter(
       (item: any) => {
         if (item.slotName === 'createAt') return false;
@@ -138,7 +139,15 @@ export default defineComponent({
         pageName: props.pageName,
         id: item.id
       });
-      console.log('删除', item);
+    };
+    // 刷新
+    const handleUpdate = () => {
+      store.dispatch('system/getPageListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          isShowLoading: true
+        }
+      });
     };
     const handleNewClick = () => {
       emit('newBtnClick');
@@ -157,7 +166,8 @@ export default defineComponent({
       isDelete,
       handleDeleteClick,
       handleNewClick,
-      handleEditClick
+      handleEditClick,
+      handleUpdate
     };
   }
 });
